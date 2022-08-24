@@ -1,43 +1,28 @@
 import PropTypes from 'prop-types';
-import { Component } from 'react';
-import {
-  Contacts,
-  ContactsItem,
-  Label,
-  ContactsButton,
-  ContactContainer,
-} from './ContactsList.styled';
-import { RiContactsFill } from 'react-icons/ri';
-import { AiFillDelete } from 'react-icons/ai';
+import { Contacts } from './ContactsList.styled';
+import { ContactsItem } from '../ContactsItem/ContactsItem';
 
-export class ContactsList extends Component {
-  static propTypes = {
-    contacts: PropTypes.arrayOf(PropTypes.object).isRequired,
-    onClick: PropTypes.func.isRequired,
-  };
+export const ContactsList = ({ contacts, onClick }) => {
+  return (
+    <>
+      <Contacts>
+        {contacts.map(({ name, number, id }) => {
+          return (
+            <ContactsItem
+              key={id}
+              id={id}
+              name={name}
+              number={number}
+              onClick={onClick}
+            />
+          );
+        })}
+      </Contacts>
+    </>
+  );
+};
 
-  render() {
-    const { contacts } = this.props;
-    return (
-      <>
-        <Contacts>
-          {contacts.map(({ name, number, id }) => {
-            return (
-              <ContactsItem key={id}>
-                <Label>
-                  <ContactContainer>
-                    <RiContactsFill style={{ marginRight: '8px' }} />
-                    {name}: {number}
-                  </ContactContainer>
-                  <ContactsButton id={id} onClick={this.props.onClick}>
-                    <AiFillDelete />
-                  </ContactsButton>
-                </Label>
-              </ContactsItem>
-            );
-          })}
-        </Contacts>
-      </>
-    );
-  }
-}
+ContactsList.propTypes = {
+  contacts: PropTypes.arrayOf(PropTypes.object).isRequired,
+  onClick: PropTypes.func.isRequired,
+};
